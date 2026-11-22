@@ -1,0 +1,6 @@
+quarter,business_unit,allocated_budget_usd,actual_spend_usd,variance_pct,cost_center_head
+Q1-2026,Cloud Data Centers,1800000,1750000,-2.7,Dr. Marcus Vance
+Q2-2026,Cloud Data Centers,2000000,2120000,6.0,Dr. Marcus Vance
+Q3-2026,Cloud Data Centers,2200000,2490000,13.1,Dr. Marcus Vance
+Q3-2026,AI Hardware Accelerators,1500000,1420000,-5.3,Elena Rostova
+Q4-2026,Cloud Data Centers,2500000,2680000,7.2,Dr. Marcus Vance

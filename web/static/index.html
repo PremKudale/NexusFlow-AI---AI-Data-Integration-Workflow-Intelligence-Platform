@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise AI Data Integration & Workflow Intelligence Platform</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-icon">AG</div>
+      <div>
+        <h1>AI Data Integration & Workflow Intelligence Platform</h1>
+        <p>FastAPI • CrewAI • Vertex AI • BigQuery • Pinecone • Cloud Run & Pub/Sub</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="cluster-status">System Operational (v2.0)</span>
+      </div>
+      <div class="user-badge">
+        <span style="color: var(--accent-cyan);">●</span>
+        <span id="current-user-role">Role: Analyst (Jane)</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('studio')">Agent Intelligence Studio</button>
+    <button class="tab-btn" onclick="switchTab('ingestion')">Data Ingestion & Semantic Index</button>
+    <button class="tab-btn" onclick="switchTab('evaluation')">Evaluation & Observability</button>
+    <button class="tab-btn" onclick="switchTab('stakeholders')">Stakeholder Discovery Suite</button>
+    <button class="tab-btn" onclick="switchTab('audit')">Audit Logs & Reliability (DLQ)</button>
+  </nav>
+
+  <main>
+    <!-- TAB 1: Multi-Agent Intelligence Studio -->
+    <section id="tab-studio" class="tab-content active">
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-title">
+          <span>Enterprise Query & Autonomous Task Delegation</span>
+          <span class="badge badge-purple">CrewAI Hierarchical Orchestration</span>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <input type="text" id="query-input" placeholder="e.g. Analyze Q3 operating margins against cloud infra costs and verify any supplier SLA breach penalties..." value="What were our gross revenues and operating margin percentages for Q3-2026 vs Q2-2026, and how much did cloud infrastructure cost?">
+          <button class="btn btn-primary" id="btn-run-query" onclick="runWorkflow()">Execute Workflow</button>
+        </div>
+        <div class="preset-queries">
+          <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Suggested Scenarios:</span>
+          <span class="preset-chip" onclick="setQuery(this)">Identify Q3 supplier SLA breaches and penalty liquidated damages</span>
+          <span class="preset-chip" onclick="setQuery(this)">Audit ERP orders on credit review and compare against Confluence SOP</span>
+          <span class="preset-chip" onclick="setQuery(this)">Inventory stock depletion and reorder thresholds for Austin data center</span>
+        </div>
+
+        <!-- Live Agent Flow Diagram -->
+        <div class="agent-flow" id="agent-flow-diagram">
+          <div class="agent-node" id="node-plan">1. Strategic Planner</div>
+          <span class="flow-arrow">➔</span>
+          <div class="agent-node" id="node-sql">2. SQL & Analytics (BQ/ERP)</div>
+          <span class="flow-arrow">➔</span>
+          <div class="agent-node" id="node-vec">3. Semantic Retrieval (Pinecone)</div>
+          <span class="flow-arrow">➔</span>
+          <div class="agent-node" id="node-val">4. Fact-Checker & Guardrail</div>
+          <span class="flow-arrow">➔</span>
+          <div class="agent-node" id="node-rep">5. Executive Synthesis</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Executive Briefing Output -->
+        <div class="card">
+          <div class="card-title">
+            <span>Executive Intelligence Briefing</span>
+            <span id="audit-verdict-badge" class="badge badge-green">AUDIT: PASSED (95%)</span>
+          </div>
+          <div class="report-view" id="report-output">Awaiting execution... Click 'Execute Workflow' above to trigger the CrewAI autonomous multi-agent pipeline.</div>
+        </div>
+
+        <!-- Observability & Granular Execution Trace -->
+        <div class="card">
+          <div class="card-title">
+            <span>Granular Execution Telemetry & Traces</span>
+            <span id="trace-id-badge" class="badge badge-blue">Trace ID: Pending</span>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+            <div>Latency: <strong id="trace-latency" style="color: #fff;">0 ms</strong></div>
+            <div>Throughput: <strong id="trace-tps" style="color: #fff;">0 tok/s</strong></div>
+            <div>Tokens: <strong id="trace-tokens" style="color: #fff;">0</strong></div>
+            <div>Cost: <strong id="trace-cost" style="color: var(--accent-green);">$0.000000</strong></div>
+          </div>
+          <div id="spans-container" style="max-height: 400px; overflow-y: auto;">
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Run a query to inspect agent spans, prompt/completion utilization, and exact API costs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Data Ingestion & Semantic Indexing -->
+    <section id="tab-ingestion" class="tab-content">
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div class="card">
+          <div class="card-title">
+            <span>Multimodal Document Ingestion</span>
+            <span class="badge badge-blue">PDF • CSV • Email • Confluence</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Upload contracts, balance sheets, emails, or operational manuals. Text is chunked, embedded via Vertex AI, and upserted into Pinecone.
+          </p>
+          <div style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 2rem; text-align: center; margin-bottom: 1rem;">
+            <input type="file" id="file-upload-input" style="display: none;" onchange="handleFileUpload(event)">
+            <button class="btn btn-secondary" onclick="document.getElementById('file-upload-input').click()">Select Document (PDF / CSV / XLSX / TXT)</button>
+            <div id="upload-status" style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--accent-cyan);"></div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary" style="flex: 1;" onclick="triggerERPSync()">Sync ERP Database</button>
+            <button class="btn btn-secondary" style="flex: 1;" onclick="seedDemoData()">Seed Enterprise Knowledge</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Unified Semantic Index Statistics</span>
+            <span class="badge badge-green" id="vector-backend-badge">Pinecone / Memory</span>
+          </div>
+          <div class="grid-2" style="margin-bottom: 1rem;">
+            <div class="kpi-card">
+              <div class="kpi-label">Total Vector Chunks</div>
+              <div class="kpi-value" id="kpi-total-vectors">--</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Embedding Dimensions</div>
+              <div class="kpi-value" id="kpi-vector-dim">--</div>
+            </div>
+          </div>
+          <div class="card-title" style="font-size: 0.85rem; margin-top: 1rem;">Breakdown by Ingestion Source</div>
+          <div id="source-breakdown-list" style="font-size: 0.85rem; color: var(--text-secondary);">
+            Loading vector statistics...
+          </div>
+        </div>
+      </div>
+
+      <!-- Vector Search Tester -->
+      <div class="card">
+        <div class="card-title">
+          <span>Vector Index Direct Similarity Probe</span>
+          <span class="badge badge-cyan">Cosine + Lexical Hybrid Rank</span>
+        </div>
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+          <input type="text" id="vector-probe-query" placeholder="Enter semantic query e.g. 'liquidated damages substrate shortage'" value="liquidated damages substrate defect SLA">
+          <button class="btn btn-secondary" onclick="probeVectorStore()">Probe Index</button>
+        </div>
+        <div id="probe-results" style="max-height: 250px; overflow-y: auto;">
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Click 'Probe Index' to retrieve raw semantic citations and relevance scores.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Evaluation & Observability Pipeline -->
+    <section id="tab-evaluation" class="tab-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 700;">Evaluation Pipelines & Observability Metrics</h2>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Automated benchmarking measuring answer correctness, retrieval recall, latency, tokens/sec, and cost.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="runEvalBenchmarks()">Run Full Benchmark Suite</button>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <div class="kpi-card">
+          <div class="kpi-label">Answer Correctness</div>
+          <div class="kpi-value" id="eval-kpi-correctness">--%</div>
+          <div class="kpi-subtext">Ground Truth Alignment</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Retrieval Recall</div>
+          <div class="kpi-value" id="eval-kpi-recall">--%</div>
+          <div class="kpi-subtext">Semantic Coverage</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">P50 / P95 Latency</div>
+          <div class="kpi-value" id="eval-kpi-latency">-- ms</div>
+          <div class="kpi-subtext">End-to-end delegation</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg Throughput</div>
+          <div class="kpi-value" id="eval-kpi-tps">-- tok/s</div>
+          <div class="kpi-subtext">Token Generation Rate</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div class="card">
+          <div class="card-title">Token Utilization & Prompt/Completion Distribution</div>
+          <canvas id="tokenChart" height="220"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Benchmark Query Latency & Cost Breakdown</div>
+          <canvas id="latencyChart" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Curated Benchmark Suite Runs</div>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Test ID</th>
+                <th>Category</th>
+                <th>Correctness</th>
+                <th>Recall</th>
+                <th>Latency (ms)</th>
+                <th>Throughput</th>
+                <th>Estimated Cost</th>
+              </tr>
+            </thead>
+            <tbody id="benchmark-table-body">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading benchmark evaluations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Stakeholder Discovery Suite -->
+    <section id="tab-stakeholders" class="tab-content">
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-title">
+          <span>Simulated Customer Stakeholders: Technical Discovery</span>
+          <span class="badge badge-purple">Executive Persona Inquiries</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Run interactive technical discovery interrogations with 3 simulated customer stakeholders. The platform coordinates multi-agent delegation across ERP tables, BigQuery models, and Pinecone contracts in real-time.
+        </p>
+        <div class="grid-3">
+          <div class="card" style="background: var(--bg-card);">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #fff;">Dr. Alistair Vance</div>
+            <div style="font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">Chief Financial Officer (CFO)</div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              "Reconcile our Q3 operating margins against cloud infrastructure spend, and identify if any supplier SLA penalty credits should be credited to Q4 financials."
+            </p>
+            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8rem;" onclick="runStakeholderScenario(0)">Run CFO Discovery</button>
+          </div>
+
+          <div class="card" style="background: var(--bg-card);">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #fff;">Elena Rostova</div>
+            <div style="font-size: 0.75rem; color: var(--accent-indigo); margin-bottom: 0.5rem;">VP of Global Supply Chain</div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              "Review all fab substrate delays from Silicon Foundry International for SKU-MOD-101 and verify if liquidated damages match our master SLA agreement."
+            </p>
+            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8rem;" onclick="runStakeholderScenario(1)">Run Supply Chain Discovery</button>
+          </div>
+
+          <div class="card" style="background: var(--bg-card);">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #fff;">Marcus Thorne</div>
+            <div style="font-size: 0.75rem; color: var(--accent-amber); margin-bottom: 0.5rem;">Chief Compliance & Risk Auditor</div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              "Audit high-value orders currently on hold or review, verify credit limit policies against Confluence SOP, and check system tamper-evident logs."
+            </p>
+            <button class="btn btn-secondary" style="width: 100%; font-size: 0.8rem;" onclick="runStakeholderScenario(2)">Run Compliance Discovery</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: Audit Logs & Reliability (DLQ) -->
+    <section id="tab-audit" class="tab-content">
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div class="card">
+          <div class="card-title">
+            <span>Tamper-Evident Audit Trail</span>
+            <span class="badge badge-green">SHA-256 Checksums Verified</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Every API request, agent query, and file ingestion event is hashed and recorded with ISO timestamps for enterprise compliance.
+          </p>
+          <div style="max-height: 400px; overflow-y: auto;" id="audit-log-list">
+            Loading audit events...
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Dead-Letter Queue (DLQ) & Retry Monitor</span>
+            <span class="badge badge-amber" id="dlq-count-badge">0 Messages</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Events that exhaust exponential backoff retry limits are routed to DLQ for quarantine, audit inspection, and replay.
+          </p>
+          <div style="max-height: 400px; overflow-y: auto;" id="dlq-container">
+            <div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+              Dead Letter Queue is clear. All async Pub/Sub event deliveries acknowledged.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
+
